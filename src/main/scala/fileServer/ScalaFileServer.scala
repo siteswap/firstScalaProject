@@ -1,3 +1,5 @@
+package fileServer
+
 import java.net.ServerSocket
 import java.io._
 import java.util.Date

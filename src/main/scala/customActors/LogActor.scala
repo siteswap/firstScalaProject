@@ -1,7 +1,8 @@
-import scala.actors._
-import scala.collection.mutable.HashMap
+package customActors
 
-class LogActor extends Actor {
+import scala.actors._
+
+class LogActor() extends Actor {
 
 	def act() {
 	  loop{

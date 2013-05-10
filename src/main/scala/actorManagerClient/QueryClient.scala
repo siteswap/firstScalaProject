@@ -1,3 +1,5 @@
+package actorManagerClient
+
 import java.net.Socket
 import java.io.OutputStreamWriter
 import java.io.BufferedReader
@@ -6,21 +8,19 @@ import java.io.InputStreamReader
 /**
  * Connect to gateway server and send commands to control running actors 
  */
-class QueryClient {
-  
-  /*  
-   * 2 - Start the new actors with a new actor class just defined (custom class loading? - either from disk or via network) 
-   * 3 - Move on to Akka/EventBus - be able to send new types between JVMs (how does akka do this?)
-   * 4 - Move on to Akka/EventBus - be able to start an interactive process that can (during runtime) subscribe to topics - probably easy if we use EventBus anyway.
-   * 5 - Use a logger in to Cassandra / Hadoop cluster (how to have a db with hadoop?)
-   */
+object QueryClient {
+
+  def main(args: Array[String]) = {
+    val connection = openConn(args(0).toInt)
+      println("Welcome to the query client")
+      println("Connecting to port " + args(0).toInt)
+      println("type send a message")
+      val reader = new BufferedReader(new InputStreamReader(System.in))
+      Iterator.continually(reader.readLine()).foreach( connection ! _)
+  }
   
   /* scala turns this in to an initialization codeblock - nice syntactic sugar for App class */
-  println("Welcome to the query client")
-  println("val qc = new QueryClient()")
-  println("val c1 = qc.openConn(1001) // to open connection")
-  println("c1 ! myString // to send a message")
-  
+
   def openConn(port:Int): msgConn = {
 	  val server = new Socket("localhost", port)
 	  new msgConn( new OutputStreamWriter(server.getOutputStream() ))
@@ -44,24 +44,20 @@ class QueryClient {
   }
   
   /*
+   * Other IDEAS
+   * 
    * TODO - scala ETL (better than abinitio, or the other one)
    * 
    * Show joins, mappings, lookups, including ones that have to be done on disk 
-   * 
-   */
-   
-   /* TODO
-   * 
-   * def readCsvFile, with headers, with typed cols
-   * 
-   */
-  
-  /*
+   *
    * Set up a simple BI tool with a snowflake schema / reads from disk using mapReduce (Akka scatter-gather)
    * Use Play framework
-   */
-  
-  /*
+   * 
+   *     
+   * 3 - Move on to Akka/EventBus - be able to send new types between JVMs (how does akka do this?)
+   * 4 - Move on to Akka/EventBus - be able to start an interactive process that can (during runtime) subscribe to topics - probably easy if we use EventBus anyway.
+   * 5 - Use a logger in to Cassandra / Hadoop cluster (how to have a db with hadoop?)
+   *
    * Movie streaming server
    */
     

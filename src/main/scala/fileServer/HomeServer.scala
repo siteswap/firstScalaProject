@@ -1,3 +1,4 @@
+/**
 import tiscaf.HApp
 import tiscaf.HReqData
 import tiscaf.HServer
@@ -29,3 +30,4 @@ object HomeServer extends HServer with App {
 }
 
 object HomeServerStop { def main(args: Array[String]) = new tiscaf.HStop("localhost", 8911) stop }
+*/

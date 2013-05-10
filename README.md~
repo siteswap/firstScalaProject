@@ -23,7 +23,4 @@ Connect to it with the client:
 scala actorManagerClient.QueryClient 8002
 
 
-Now compile a new file and type the command "new customActor.newActor 6"
-
-
 

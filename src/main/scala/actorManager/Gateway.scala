@@ -1,10 +1,13 @@
+package actorManager
+
 import scala.actors._
 import java.net._
 import java.io._
+import customActors.LogActor
 
 object Gateway extends App {
 	
-	val GATEWAY_PORT = 1001	
+	val GATEWAY_PORT = 8002
 	val myActors = collection.mutable.Map[Int,Actor]() ++ (for(i <- 1 to 5) yield (i -> new LogActor())).toMap
 	
 	val openPort = new ServerSocket(this.GATEWAY_PORT)
@@ -18,13 +21,14 @@ object Gateway extends App {
 	clientIterator foreach handleRequest
 	
 	// <command> <actor number>
+	// new <actorPackage.actorType> <actor number>
 	def handleRequest(req:String) {
 	  val cmd = req.split(" ").head
 	  val num = req.split(" ").last.toInt
 	  cmd match {
 	    case "kill" => myActors( num ) ! "kill" //; myActors.remove(num)
 	    case "start" => myActors += (num -> new LogActor()); myActors(num).start()
-	    case "new" => myActors += (num -> ActorFactory.getActor("LogActor")); myActors(num).start()
+	    case "new" => myActors += (num -> ActorFactory.getActor(req.split(" ")(1))); myActors(num).start()
 	    case "show" => myActors( num ) ! "show"
 	    case kv:String => myActors( num ) ! kv
 	  } 
